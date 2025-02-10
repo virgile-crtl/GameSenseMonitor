@@ -1,27 +1,47 @@
-import requests
+import requests, os, json
 
-class GameSense:
-    adress = "http://localhost:"
+class Endpoints:
+    REGISTER_GAME = "/game_metada"
+    REMOVE_GAME = "/remove_game"
+    REGISTER_EVENT = "/register_game_event"
+    BIND_EVENT = '/bind_game_event'
+    REMOVE_EVENT = '/remove_game_event'
+    SEND_EVENT = '/game_event'
+    HEARTBEAT = '/game_heartbeat'
 
-    def __init__(self, port):
-        self.adress += port
-        requests.post(self.adress + "/game_metada", json = {
-            "game": "MONITOR",
-            "game_display_name": "Best Monitor",
-            "developer": "S2xLM2Z",
-        })
+class GameSense():
+
+    def __init__(self, game_name, display_name, developer):
+        self.address = self.find_port()
+        self.game_name = game_name
+        self.display_name = display_name
+        self.developer = developer
+        self.endpoint = Endpoints()
+        self.register_game()
         self.bind_event()
 
+    def find_port(self):
+        path = os.path.expandvars(
+            r'%programdata%\SteelSeries\SteelSeries Engine 3\coreProps.json')
+        return 'http://'+json.load(open(path))['address']
+    
+    def register_game(self):
+        requests.post(self.address + self.endpoint.REGISTER_GAME, json = {
+            "game": self.game_name,
+            "game_display_name": self.display_name,
+            "developer": self.developer,
+        })
+
     def register_event(self):
-        requests.post(self.adress + "/register_game_event", json = {
-            "game":"MONITOR",
+        requests.post(self.address + self.endpoint.REGISTER_EVENT, json = {
+            "game": self.game_name,
             "event":"HW",
             "value_optional": True
         })
 
     def bind_event(self):
-        requests.post(self.adress + "/bind_game_event", json = {
-            "game": "MONITOR",
+        requests.post(self.address + self.endpoint.BIND_EVENT, json = {
+            "game": self.game_name,
             "event": "HW",
             "handlers": [{
                 "device-type":"screened",
@@ -35,8 +55,8 @@ class GameSense:
         })
 
     def send_event(self, data):
-        requests.post(self.adress + "/game_event", json = {
-            "game": "MONITOR",
+        requests.post(self.address + self.endpoint.SEND_EVENT, json = {
+            "game": self.game_name,
             "event": "HW",
             "data": data
         })
