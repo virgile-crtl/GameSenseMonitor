@@ -1,7 +1,7 @@
-import requests, os, json
+import requests, os, json , sys
 
 class Endpoints:
-    REGISTER_GAME = "/game_metada"
+    REGISTER_GAME = "/game_metadata"
     REMOVE_GAME = "/remove_game"
     REGISTER_EVENT = "/register_game_event"
     BIND_EVENT = '/bind_game_event'
@@ -11,52 +11,47 @@ class Endpoints:
 
 class GameSense():
 
-    def __init__(self, game_name, display_name, developer):
-        self.address = self.find_port()
-        self.game_name = game_name
-        self.display_name = display_name
-        self.developer = developer
+    def __init__(self):
+        self.address = self.find_adress()
         self.endpoint = Endpoints()
-        self.register_game()
-        self.bind_event()
 
-    def find_port(self):
-        path = os.path.expandvars(
-            r'%programdata%\SteelSeries\SteelSeries Engine 3\coreProps.json')
-        return 'http://'+json.load(open(path))['address']
-    
-    def register_game(self):
-        requests.post(self.address + self.endpoint.REGISTER_GAME, json = {
-            "game": self.game_name,
-            "game_display_name": self.display_name,
-            "developer": self.developer,
-        })
+    def find_adress(self):
+        try:
+            path = os.path.expandvars(r'%programdata%\SteelSeries\SteelSeries Engine 3\coreProps.json')
+        except Exception as e:
+            print(f"Error while opening the adress file.\n{e}", end="")
+            sys.exit()
+        try:
+            return 'http://'+json.load(open(path))['address']
+        except Exception as e:
+            print(f"Error while loading the adress.\n{e}", end="")
+            sys.exit()
 
-    def register_event(self):
-        requests.post(self.address + self.endpoint.REGISTER_EVENT, json = {
-            "game": self.game_name,
-            "event":"HW",
-            "value_optional": True
-        })
+    def register_game(self, body):
+        self.send_request(self.endpoint.REGISTER_GAME, body)
 
-    def bind_event(self):
-        requests.post(self.address + self.endpoint.BIND_EVENT, json = {
-            "game": self.game_name,
-            "event": "HW",
-            "handlers": [{
-                "device-type":"screened",
-                "mode":"screen",
-                "zone":"one",
-                "datas": [{
-                    "has-text":True,
-                    "context-frame-key":"custom-text"
-                }]
-            }]
-        })
+    def register_event(self, body):
+        self.send_request(self.endpoint.REGISTER_EVENT, body)
 
-    def send_event(self, data):
-        requests.post(self.address + self.endpoint.SEND_EVENT, json = {
-            "game": self.game_name,
-            "event": "HW",
-            "data": data
-        })
+    def bind_event(self, body):
+        self.send_request(self.endpoint.BIND_EVENT, body)
+
+    def remove_game(self, body):
+        self.send_request(self.endpoint.REMOVE_GAME, body)
+
+    def send_event(self, body):
+        self.send_request(self.endpoint.SEND_EVENT, body)
+
+    def send_request(self, endpoint, body):
+        try:
+            response = requests.post(self.address + endpoint, json = body)
+            response.raise_for_status()
+            print("200 OK")
+        except requests.exceptions.HTTPError as http_err:
+            print(f"Error HTTP: {http_err}")
+        except requests.exceptions.Timeout:
+            print("Error: Timeout")
+        except requests.exceptions.RequestException as req_err:
+            print(f"Request Error: {req_err}")
+        except Exception as e:
+            print(f"Unexpected Error: {e}")

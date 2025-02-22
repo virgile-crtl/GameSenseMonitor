@@ -1,0 +1,40 @@
+{
+    "event_to_bind": [
+        {
+            "event": "ALL_MONITOR_INFO",
+            "handlers": [{
+                "device-type":"screened",
+                "mode":"screen",
+                "zone":"one",
+                "datas": [{
+                    "length-millis": 2000,
+                    "icon-id": 43,
+                    "lines": [
+                        {
+                            "has-text": true,
+                            "context-frame-key": "cpu_temp",
+                            "prefix": "CPU: "
+                        },
+                        {
+                            "has-text": true,
+                            "context-frame-key": "gpu_temp",
+                            "prefix": "GPU: "
+                        },
+                        {
+                            "has-text": true,
+                            "context-frame-key": "ram_usage",
+                            "prefix": "RAM: ",
+                            "suffix": "%"
+                        }
+                    ]
+                }]
+            }]
+        }
+    ],
+    "event_to_register": [
+        {
+            "event":"ALL_MONITOR_INFO",
+            "value_optional": true
+        }
+    ]
+}
