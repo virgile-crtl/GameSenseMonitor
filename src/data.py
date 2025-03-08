@@ -1,7 +1,8 @@
 import psutil, clr, os, sys
 from datetime import datetime
 
-dll_path = "C:\\Program Files\\BestMonitor\\dist\\assets\\lib\\LibreHardwareMonitorLib.dll"
+# dll_path = "C:\\Program Files\\BestMonitor\\dist\\assets\\lib\\LibreHardwareMonitorLib.dll"
+dll_path = "C:\\Users\\virgile\\Documents\\Dev\\Better-Monitoring\\assets\\lib\\LibreHardwareMonitorLib.dll"
 try:
     clr.AddReference(dll_path)
 except Exception as e:

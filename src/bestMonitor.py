@@ -1,4 +1,4 @@
-import json, sys
+import json, sys, os
 from data import Data
 
 class BestMonitor:
@@ -14,8 +14,7 @@ class BestMonitor:
         except Exception as e:
             raise e
         try:
-            self.config_file =open('C:\\Users\\virgile\\Documents\\Dev\\Better-Monitoring\\assets\\config\\bestMonitorInfos.json', 'r+')
-            # file =open('C:\\Program Files\\BestMonitor\\dist\\assets\\config\\bestMonitorInfos.json')
+            self.config_file =open(os.getenv("CONFIG_FILE_PATH"), 'r+')
             self.infos= json.load(self.config_file)
         except Exception as e:
             my_e = type(e)(f"Error while loading the config file.\n{e}")

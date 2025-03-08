@@ -11,9 +11,36 @@ from tkinter import scrolledtext
 import traceback
 import ctypes
 from popUp import Popup
+import os
+from dotenv import load_dotenv # type: ignore
+import sys
+import pystray
+from pystray import MenuItem as item
+from PIL import Image, ImageDraw
+import multiprocessing
+
+def load_env():
+    if os.getenv('ENV', 'dev') == 'prod':
+        load_dotenv('.env.prod')
+    else:
+        load_dotenv('.env.dev')
+
+def quit_action(icon, item):
+    icon.stop()
+
+# Créer l'icône dans la barre des tâches avec un menu contextuel
+def create_icon():
+    image = Image.open("C:\\Users\\virgile\\Documents\\Dev\\Better-Monitoring\\assets\\icons\\icon.ico")
+    menu = (item('Quitter', quit_action),)
+    icon = pystray.Icon("BestMonitor", image, menu=menu)
+    icon.run()
 
 def main():
     try:
+        load_env()
+        menu = multiprocessing.Process(target=create_icon)
+        menu.daemon = True
+        menu.start()
         popUp = Popup()
         bestMonitor = BestMonitor()
         gameSense = GameSense()
@@ -37,7 +64,7 @@ def main():
 
     error_count = 0
     try:
-        while True:
+        while menu.is_alive():
             if bestMonitor.get_timer() >= bestMonitor.get_display_info():
                 bestMonitor.set_timer(0)
                 error_count = 0
