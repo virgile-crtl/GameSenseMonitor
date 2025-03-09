@@ -1,64 +1,16 @@
 import json, sys, os
-from data import Data
 
 class BestMonitor:
     timer = 0
     game = "MONITOR"
     display_name = "Best Monitor"
     developer = "LM2Z"
+    infos = {}
 
 
-    def __init__(self):
-        try :
-            self.data = Data()
-        except Exception as e:
-            raise e
-        try:
-            self.config_file =open(os.getenv("CONFIG_FILE_PATH"), 'r+')
-            self.infos= json.load(self.config_file)
-        except Exception as e:
-            my_e = type(e)(f"Error while loading the config file.\n{e}")
-            raise my_e from e
-
-    def __del__(self):
-        try:
-            self.config_file.seek(0)
-            json.dump(self.infos, self.config_file, indent=4)
-            self.config_file.truncate()
-            self.config_file.close()
-        except Exception as e:
-            print(f"Error while saving the config file.\n{e}")
-            # show_error_popup("Error while saving the config file.\n"+
-            # "If data has been modified, it may not have been saved.", f"{e}")
-
-    def check_config_file(self):
-        self.event_to_bind = self.infos.get("event_to_bind", [])
-        if not self.event_to_bind or self.event_to_bind == []:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the events to bind.\n")
-        self.event_to_register = self.infos.get("event_to_register", [])
-        if not self.event_to_register or self.event_to_register == []:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the events to register.\n")
-        if not self.infos["app_config_values"]["refresh_rate"]:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the refresh rate.\n")
-        if not self.infos["app_config_values"]["display_volume_time"]:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the display volume time.\n")
-        if not self.infos["app_config_values"]["display_info_time"]:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the display info time.\n")
-        if not self.infos["app_config_values"]["current_event"]:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "Error while getting the current event.\n")
-        i = 0
-        for event in self.event_to_register:
-            if event.get("event", "") == self.infos["app_config_values"]["current_event"]:
-                i += 1
-        if i == 0:
-            raise Exception("The configuration file seems corrupted.\n"+
-            "The current event is not in the list of events.\n")
+    def __init__(self, config):
+        self.event_to_register = config["event_to_register"]
+        self.event_to_bind = config["event_to_bind"]
 
 
     def get_game_info(self):
@@ -78,14 +30,14 @@ class BestMonitor:
             event["game"] = self.game
         return self.event_to_register
 
-    def get_info_to_send(self):
-        if self.infos["app_config_values"]["current_event"] == "ALL_MONITOR_INFO":
-            return self.get_all_monitor_info()
-        if self.infos["app_config_values"]["current_event"] == "HOUR_TEMP_INFO":
-            return self.get_hour_temp_info()
+    def get_info_to_send(self, data, current_event):
+        if current_event == "ALL_MONITOR_INFO":
+            return self.get_all_monitor_info(data)
+        if current_event == "HOUR_TEMP_INFO":
+            return self.get_hour_temp_info(data)
         return {}
 
-    def get_all_monitor_info(self):
+    def get_all_monitor_info(self, data):
         self.timer += 1
         return {
             "game": self.game,
@@ -93,14 +45,14 @@ class BestMonitor:
             "data": {
                 "value": self.timer,
                 "frame": {
-                    "cpu_temp": self.data.get_cpu_temp(),
-                    "gpu_temp": self.data.get_gpu_temp(),
-                    "ram_usage": self.data.get_ram_usage()
+                    "cpu_temp": data["cpu_temp"],
+                    "gpu_temp": data["gpu_temp"],
+                    "ram_usage": data["ram_usage"]
                 }
             }
         }
 
-    def get_hour_temp_info(self):
+    def get_hour_temp_info(self, data):
         self.timer += 1
         return {
             "game": self.game,
@@ -108,9 +60,9 @@ class BestMonitor:
             "data": {
                 "value": self.timer,
                 "frame": {
-                    "hour": self.data.get_hour(),
-                    "cpu_temp": self.data.get_cpu_temp(),
-                    "gpu_temp": self.data.get_gpu_temp()
+                    "hour": data["hour"],
+                    "cpu_temp": data["cpu_temp"],
+                    "gpu_temp": data["gpu_temp"]
                 }
             }
         }
@@ -125,27 +77,8 @@ class BestMonitor:
         self.timer = value
         return self.timer
 
-    def get_refresh_rate(self) -> int:
-        return self.infos["app_config_values"]["refresh_rate"]
-
-    def set_refresh_rate(self, value):
-        self.infos["app_config_values"]["refresh_rate"] = value
-        return self.infos["app_config_values"]["refresh_rate"]
-
-    def get_display_vol(self) -> int:
-        return self.infos["app_config_values"]["display_volume_time"]
-
-    def set_display_vol(self, value):
-        self.infos["app_config_values"]["display_volume_time"] = value
-        return self.infos["app_config_values"]["display_volume_time"]
-
-    def get_display_info(self) -> int:
-        return self.infos["app_config_values"]["display_info_time"]
-
-    def set_display_info(self, value):
-        self.infos["app_config_values"]["display_info_time"] = value
-        return self.infos["app_config_values"]["display_info_time"]
-
-
-
-
+    def get_events(self):
+        return {
+            "event_to_bind": self.event_to_bind,
+            "event_to_register": self.event_to_register
+        }

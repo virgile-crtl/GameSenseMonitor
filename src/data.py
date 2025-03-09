@@ -57,3 +57,12 @@ class Data:
             return str(psutil.virtual_memory().percent) + "%"
         except Exception as e:
             return "N/A"
+
+    def get_all_info(self):
+        return {
+            "cpu_temp": self.get_cpu_temp(),
+            "gpu_temp": self.get_gpu_temp(),
+            "ram_usage": self.get_ram_usage(),
+            "hour": self.get_hour()
+        }
+

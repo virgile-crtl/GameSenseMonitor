@@ -51,7 +51,7 @@ class GameSense():
         try:
             response = requests.post(self.address + endpoint, json = body)
             response.raise_for_status()
-            print("200 OK")
+            # print("200 OK")
             return 0
         except requests.exceptions.HTTPError as http_err:
             print(f"Error HTTP: {http_err}")
