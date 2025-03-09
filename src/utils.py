@@ -1,9 +1,19 @@
 import json, os, sys
 from dotenv import load_dotenv # type: ignore
 
+def get_resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        # Si exécuté en mode PyInstaller
+        base_path = sys._MEIPASS
+    else:
+        # Mode script normal (non compilé)
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 def saved_config(popUp, config):
     try:
-        config_file =open(os.getenv("CONFIG_FILE_PATH"), 'r+')
+        config_file =open(get_resource_path("assets\\config\\bestMonitorInfos.json"), 'r+')
         config_file.seek(0)
         json.dump(config, config_file, indent=4)
         config_file.truncate()
@@ -26,18 +36,8 @@ def connection_with_sonar(bestMonitor, gameSense, popUp):
         "Verify if it is running in the background.\nOtherwise, start it and click on 'Restart'.", f"{e}")
         sys.exit(1)
 
-def load_env():
-    try:
-        if os.getenv('ENV', 'dev') == 'prod':
-            load_dotenv('.env.prod')
-        else:
-            load_dotenv('.env.dev')
-    except Exception as e:
-            my_e = type(e)(f"Error while loading the env file.\n{e}")
-            raise my_e from e
-
 def load_config_files():
-        config_file =open(os.getenv("CONFIG_FILE_PATH"), 'r+')
+        config_file =open(get_resource_path("assets\\config\\bestMonitorInfos.json"), 'r+')
         infos = (json.load(config_file))
         config_file.close()
         event_to_bind = infos.get("event_to_bind", [])

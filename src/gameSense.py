@@ -17,12 +17,8 @@ class GameSense():
 
     def find_adress(self):
         try:
-            path = os.path.expandvars(os.getenv("ADDRESS_FILE_PATH"))
-        except Exception as e:
-            my_e = type(e)(f"Error while opening the adress file.\n{e}")
-            raise my_e from e
-        try:
-            file = open(path)
+            programdata_path = os.environ.get("PROGRAMDATA", r"C:\ProgramData")
+            file = open( os.path.join(programdata_path, "SteelSeries", "SteelSeries Engine 3", "coreProps.json"))
             self.address = 'http://'+json.load(file)['address']
             file.close()
         except Exception as e:

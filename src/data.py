@@ -1,10 +1,9 @@
 import psutil, clr
 from datetime import datetime
+from utils import get_resource_path
 
-# dll_path = "C:\\Program Files\\BestMonitor\\dist\\assets\\lib\\LibreHardwareMonitorLib.dll"
-dll_path = "C:\\Users\\virgile\\Documents\\Dev\\Better-Monitoring\\assets\\lib\\LibreHardwareMonitorLib.dll"
 try:
-    clr.AddReference(dll_path)
+    clr.AddReference(get_resource_path("assets\\lib\\LibreHardwareMonitorLib.dll"))
 except Exception as e:
     my_e = type(e)(f"Error while loading the dll.\n{e}")
     raise my_e from e

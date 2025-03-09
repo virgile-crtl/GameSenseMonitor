@@ -38,7 +38,6 @@ def main_loop(bestMonitor, data, gameSense, menu, popUp, infos):
 def main():
     try:
         popUp = Popup()
-        load_env()
         config = load_config_files()
         data = Data()
         gameSense = GameSense()

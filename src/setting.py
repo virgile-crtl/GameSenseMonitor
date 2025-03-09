@@ -1,12 +1,12 @@
-import os
 from pystray import MenuItem, Menu, Icon
 from PIL import Image
+from utils import get_resource_path
 
 class Setting:
 
     def __init__(self, infos):
         self.infos = infos
-        image = Image.open(os.getenv("ICON_PATH", ""))
+        image = Image.open(get_resource_path("assets\\icons\\icon.ico"))
         menu = Menu(
             MenuItem('Choose the event to send.',Menu(
                 MenuItem('All monitoring info', self.set_current_event("ALL_MONITOR_INFO"), checked=self.get_current_event("ALL_MONITOR_INFO"), radio=True),
