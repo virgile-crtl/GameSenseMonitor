@@ -41,23 +41,23 @@ def load_config_files():
         infos = (json.load(config_file))
         config_file.close()
         event_to_bind = infos.get("event_to_bind", [])
+        event_to_register = infos.get("event_to_register", [])
         if not event_to_bind or event_to_bind == []:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the events to bind.\n")
-        event_to_register = infos.get("event_to_register", [])
         if not event_to_register or event_to_register == []:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the events to register.\n")
         if not infos["app_config_values"]["refresh_rate"]:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the refresh rate.\n")
-        if not infos["app_config_values"]["display_volume_time"]:
+        if not "display_volume_time" in infos["app_config_values"]:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the display volume time.\n")
-        if not infos["app_config_values"]["display_info_time"]:
+        if not "display_info_time" in infos["app_config_values"]:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the display info time.\n")
-        if not infos["app_config_values"]["current_event"]:
+        if not "current_event" in infos["app_config_values"]:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the current event.\n")
         i = 0
