@@ -1,4 +1,4 @@
-import requests, os, json , sys
+import requests, os, json
 
 class Endpoints:
     REGISTER_GAME = "/game_metadata"

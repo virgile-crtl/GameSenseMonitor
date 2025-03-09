@@ -82,8 +82,8 @@
     ],
     "app_config_values": {
         "refresh_rate": 1,
-        "display_volume_time": 5,
-        "display_info_time": 30,
-        "current_event": "ALL_MONITOR_INFO"
+        "display_volume_time": 0,
+        "display_info_time": 3,
+        "current_event": "HOUR_TEMP_INFO"
     }
 }

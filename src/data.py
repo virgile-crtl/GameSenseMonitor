@@ -1,4 +1,4 @@
-import psutil, clr, os, sys
+import psutil, clr
 from datetime import datetime
 
 # dll_path = "C:\\Program Files\\BestMonitor\\dist\\assets\\lib\\LibreHardwareMonitorLib.dll"
