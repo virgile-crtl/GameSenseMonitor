@@ -35,7 +35,7 @@ class Setting:
                 MenuItem('never', self.set_display_vol_time(0), checked=self.get_display_vol_time(0), radio=True),
 
             )),
-            MenuItem('Quitter', self.quit_action)
+            MenuItem('Quit', self.quit_action)
         )
         self.icon = Icon("BestMonitor", image, menu=menu)
         self.icon.run()
