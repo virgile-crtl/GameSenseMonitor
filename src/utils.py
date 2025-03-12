@@ -1,5 +1,4 @@
 import json, os, sys
-from dotenv import load_dotenv # type: ignore
 
 def get_resource_path(relative_path):
     if getattr(sys, 'frozen', False):

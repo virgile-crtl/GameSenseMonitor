@@ -1,0 +1,12 @@
+main.dist/
+main.build/
+main.onefile-build
+
+Best_Monitor/
+
+**/lib
+**/__pycache__
+**/config
+
+tmp
+tmp.py
