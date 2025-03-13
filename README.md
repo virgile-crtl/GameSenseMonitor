@@ -48,7 +48,7 @@ A Python application that displays monitoring information on the **SteelSeries A
 
 Microsoft Defender may detect the application as a potential threat, especially when using custom executables. To prevent the application from being deleted or flagged, users can add an exclusion for the installation folder.
 
-Run the following PowerShell command:
+Run the following PowerShell command in Admin:
 
 ```bash
 Add-MpPreference -ExclusionPath "C:\Program Files\Best_Monitor"
