@@ -23,7 +23,7 @@ def saved_config(popUp, config):
         "If data has been modified, it may not have been saved.", f"{e}")
         sys.exit(1)
 
-def connection_with_sonar(bestMonitor, gameSense, popUp):
+def connection_with_sonar(bestMonitor, gameSense, popUp, menu):
     try:
         gameSense.register_game(bestMonitor.get_game_info())
         for event in bestMonitor.get_event_to_register():
@@ -32,7 +32,7 @@ def connection_with_sonar(bestMonitor, gameSense, popUp):
             gameSense.bind_event(event)
     except Exception as e:
         popUp.error_restart("Error during connection with Sonar.\nSonar must be running." +
-        "Verify if it is running in the background.\nOtherwise, start it and click on 'Restart'.", f"{e}")
+        "Verify if it is running in the background.\nOtherwise, start it and click on 'Restart'.", f"{e}", menu)
         sys.exit(1)
 
 def load_config_files():

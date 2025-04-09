@@ -26,7 +26,7 @@ def main_loop(bestMonitor, data, gameSense, menu, popUp, infos):
                     popUp.error_restart(f"Error while sending data to Sonar.\n" +
                     "Verify that Sonar is still running.\n" +
                     "Otherwise, restart it and click on 'Restart'.\n" +
-                    "If it is running, restart it and click on 'Restart'.", f"{e}")
+                    "If it is running, restart it and click on 'Restart'.", f"{e}", menu)
                     sys.exit(1)
                 continue
             time.sleep(infos["refresh_rate"])
@@ -57,7 +57,7 @@ def main():
         except Exception as e:
             popUp.error("son process error", f"{e}")
             sys.exit(1)
-        connection_with_sonar(bestMonitor, gameSense, popUp)
+        connection_with_sonar(bestMonitor, gameSense, popUp, menu)
         main_loop(bestMonitor, data, gameSense, menu, popUp, infos)
         config.update({"app_config_values": dict(infos)})
         saved_config(popUp, config)
