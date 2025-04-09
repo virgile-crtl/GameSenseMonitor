@@ -84,6 +84,6 @@
         "refresh_rate": 1,
         "display_volume_time": 5,
         "display_info_time": 30,
-        "current_event": "ALL_MONITOR_INFO"
+        "current_event": "HOUR_TEMP_INFO"
     }
 }

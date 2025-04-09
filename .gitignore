@@ -5,7 +5,6 @@ main.onefile-build
 Best_Monitor/
 
 **/__pycache__
-**/config
 
 installation_script.iss
 Best_Monitor.exe
