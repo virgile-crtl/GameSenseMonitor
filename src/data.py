@@ -29,7 +29,7 @@ class Data:
 
     def get_hour(self):
         try:
-            return datetime.now().strftime("%H:%M")
+            return datetime.now().strftime("%d/%m %H:%M")
         except Exception as e:
             return "N/A"
 

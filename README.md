@@ -20,29 +20,31 @@ A Python application that displays monitoring information on the **SteelSeries A
    git clone git@github.com:virgile-crtl/Best_Monitor.git
    ```
 
-2. Navigate to the project directory:
+2. **Run the installer**:
+
+   Run the Best_Monitor_installer.exe to install the application on your system.
+
+## Compilation
+
+1. Navigate to the project directory:
 
    ```bash
    cd Best_Monitor
    ```
 
-3. Install dependencies:
+2. Install dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Compile the application** using Nuitka:
+3. **Compile the application** using Nuitka:
 
    Before using the installer, compile the Python application into a standalone executable with the following command:
 
    ```bash
    py -m nuitka --onefile --standalone --windows-console-mode=disable --include-data-files=assets/lib/LibreHardwareMonitorLib.dll=lib/ --include-data-files=assets/icons/icon.ico=icons/ --include-data-files=assets/config/bestMonitorInfos.json=config/ --follow-imports --windows-icon-from-ico=assets/icons/icon.ico --windows-uac-admin --output-filename=Best_Monitor.exe src/main.py
    ```
-
-5. **Run the installer**:
-
-   Once the compilation is done, use the installer `Best_Monitor_installer.exe` to install the application on your system.
 
 ## Avoiding Detection by Microsoft Defender
 
