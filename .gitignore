@@ -2,9 +2,9 @@ main.dist/
 main.build/
 main.onefile-build
 
-Best_Monitor/
+GameSenseMonitor/
 
 **/__pycache__
 
 installation_script.iss
-Best_Monitor.exe
+GameSenseMonitor.exe

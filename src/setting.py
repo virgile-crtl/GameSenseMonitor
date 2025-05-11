@@ -6,7 +6,7 @@ class Setting:
 
     def __init__(self, infos):
         self.infos = infos
-        image = Image.open(get_resource_path("assets\\icons\\icon.ico"))
+        image = Image.open(get_resource_path("assets\\icons\\appIcon.ico"))
         menu = Menu(
             MenuItem('Choose the event to send.',Menu(
                 MenuItem('All monitoring info', self.set_current_event("ALL_MONITOR_INFO"), checked=self.get_current_event("ALL_MONITOR_INFO"), radio=True),
@@ -37,7 +37,7 @@ class Setting:
             )),
             MenuItem('Quit', self.quit_action)
         )
-        self.icon = Icon("BestMonitor", image, menu=menu)
+        self.icon = Icon("appIcon", image, menu=menu)
         self.icon.run()
 
     def quit_action(self, icon, item):

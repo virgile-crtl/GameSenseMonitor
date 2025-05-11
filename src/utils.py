@@ -12,7 +12,7 @@ def get_resource_path(relative_path):
 
 def saved_config(popUp, config):
     try:
-        config_file =open(get_resource_path("assets\\config\\bestMonitorInfos.json"), 'r+')
+        config_file =open(get_resource_path("assets\\config\\appConfig.json"), 'r+')
         config_file.seek(0)
         json.dump(config, config_file, indent=4)
         config_file.truncate()
@@ -23,12 +23,12 @@ def saved_config(popUp, config):
         "If data has been modified, it may not have been saved.", f"{e}")
         sys.exit(1)
 
-def connection_with_sonar(bestMonitor, gameSense, popUp, menu):
+def connection_with_sonar(controller, gameSense, popUp, menu):
     try:
-        gameSense.register_game(bestMonitor.get_game_info())
-        for event in bestMonitor.get_event_to_register():
+        gameSense.register_game(controller.get_game_info())
+        for event in controller.get_event_to_register():
             gameSense.register_event(event)
-        for event in bestMonitor.get_event_to_bind():
+        for event in controller.get_event_to_bind():
             gameSense.bind_event(event)
     except Exception as e:
         popUp.error_restart("Error during connection with Sonar.\nSonar must be running." +
@@ -36,7 +36,7 @@ def connection_with_sonar(bestMonitor, gameSense, popUp, menu):
         sys.exit(1)
 
 def load_config_files():
-        config_file =open(get_resource_path("assets\\config\\bestMonitorInfos.json"), 'r+')
+        config_file =open(get_resource_path("assets\\config\\appConfig.json"), 'r+')
         infos = (json.load(config_file))
         config_file.close()
         event_to_bind = infos.get("event_to_bind", [])
