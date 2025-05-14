@@ -1,6 +1,7 @@
 from pystray import MenuItem, Menu, Icon
 from PIL import Image
 from utils import get_resource_path
+import subprocess
 
 class Setting:
 
@@ -34,6 +35,10 @@ class Setting:
                 MenuItem('15s', self.set_display_vol_time(15), checked=self.get_display_vol_time(15), radio=True),
                 MenuItem('never', self.set_display_vol_time(0), checked=self.get_display_vol_time(0), radio=True),
 
+            )),
+            MenuItem('Launch app at startup',Menu(
+                MenuItem('Yes', self.set_task_activation("Yes"), checked=self.get_task_activation("Yes"), radio=True),
+                MenuItem('No', self.set_task_activation("No"), checked=self.get_task_activation("No"), radio=True)
             )),
             MenuItem('Quit', self.quit_action)
         )
@@ -86,3 +91,19 @@ class Setting:
         def inner(item):
                 return self.infos["refresh_rate"] == value
         return inner
+
+    def set_task_activation(self, value):
+        def inner(item):
+            self.infos["task_activation"] = value
+            if self.infos["task_activation"] == "Yes":
+                subprocess.run('schtasks /create /tn "GameSenseMonitor_Startup" /tr "powershell -WindowStyle Hidden -Command Start-Process \'GameSenseMonitor.exe\' -WorkingDirectory \'%LOCALAPPDATA%\\GameSenseMonitor\'" /sc onlogon /delay 0001:00 /rl highest /f', shell=True)
+            else:
+                subprocess.run('schtasks /delete /tn "GameSenseMonitor_Startup" /f', shell=True)
+            return self.infos["task_activation"]
+        return inner
+
+    def get_task_activation(self, value):
+        def inner(item):
+            return self.infos["task_activation"] == value
+        return inner
+
