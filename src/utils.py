@@ -59,6 +59,9 @@ def load_config_files():
         if not "current_event" in infos["app_config_values"]:
             raise Exception("The configuration file seems corrupted.\n"+
             "Error while getting the current event.\n")
+        if not "task_activation" in infos["app_config_values"]:
+            raise Exception("The configuration file seems corrupted.\n"+
+            "Error while getting the task activation.\n")
         i = 0
         for event in event_to_register:
             if event.get("event", "") == infos["app_config_values"]["current_event"]:

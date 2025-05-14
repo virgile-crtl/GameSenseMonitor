@@ -84,6 +84,7 @@
         "refresh_rate": 1,
         "display_volume_time": 3,
         "display_info_time": 45,
-        "current_event": "HOUR_TEMP_INFO"
+        "current_event": "HOUR_TEMP_INFO",
+        "task_activation": "No"
     }
 }
