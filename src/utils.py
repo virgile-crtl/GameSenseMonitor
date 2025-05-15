@@ -1,4 +1,4 @@
-import json, os, sys
+import json, os, sys, time
 
 def get_resource_path(relative_path):
     if getattr(sys, 'frozen', False):
@@ -70,3 +70,10 @@ def load_config_files():
             raise Exception("The configuration file seems corrupted.\n"+
             "The current event is not in the list of events.\n")
         return infos
+
+def reset_counter(controller, error_count, infos):
+    if controller.get_timer() >= infos["display_info_time"]:
+        controller.set_timer(0)
+        time.sleep(infos["display_volume_time"])
+        return 0
+    return error_count
