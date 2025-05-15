@@ -42,7 +42,7 @@ class Setting:
             )),
             MenuItem('Quit', self.quit_action)
         )
-        self.icon = Icon("appIcon", image, menu=menu)
+        self.icon = Icon("appIcon", image, menu=menu, title="GameSenseMonitor")
         self.icon.run()
 
     def quit_action(self, icon, item):
