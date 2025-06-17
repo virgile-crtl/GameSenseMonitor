@@ -19,9 +19,10 @@ class Data:
             self.computer.IsCpuEnabled = True
             self.computer.Open()
             for hardware in self.computer.Hardware:
+                print(f"Found hardware: {hardware.Name} ({hardware.HardwareType})")
                 if hardware.HardwareType.ToString().find("Cpu") != -1:
                     self.cpu = hardware
-                if hardware.HardwareType.ToString().find("Gpu") != -1:
+                if hardware.HardwareType.ToString().find("GpuNvidia") != -1:
                     self.gpu = hardware
         except Exception as e:
             my_e = type(e)(f"Error accessing monitoring data.\n{e}")
