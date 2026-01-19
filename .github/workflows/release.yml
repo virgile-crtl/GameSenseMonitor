@@ -30,7 +30,7 @@ jobs:
 
       - name: Build with Nuitka
         run: |
-          python -m nuitka --standalone --windows-console-mode=disable --assume-yes-for-downloads`
+          python -m nuitka --standalone --windows-console-mode=disable --assume-yes-for-downloads `
             --include-data-files=assets/lib/LibreHardwareMonitorLib.dll=assets/lib/ `
             --include-data-files=assets/icons/appIcon.ico=assets/icons/ `
             --include-data-files=assets/config/appConfig.json=assets/config/ `
