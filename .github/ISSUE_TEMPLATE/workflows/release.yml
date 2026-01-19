@@ -1,0 +1,52 @@
+name: Build & Release (Nuitka)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nuitka
+
+      - name: Build with Nuitka
+        run: |
+          py -m nuitka --standalone --windows-console-mode=disable `
+            --include-data-files=assets/lib/LibreHardwareMonitorLib.dll=assets/lib/ `
+            --include-data-files=assets/icons/appIcon.ico=assets/icons/ `
+            --include-data-files=assets/config/appConfig.json=assets/config/ `
+            --follow-imports --windows-icon-from-ico=assets/icons/appIcon.ico `
+            --windows-uac-admin --output-filename=GameSenseMonitor.exe src/main.py
+
+      - name: Install Inno Setup (via Chocolatey)
+        run: |
+          choco install innosetup -y
+
+      - name: Build installer with Inno Setup
+        run: |
+          iscc ".\GameSenseMonitor.iss"
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: GameSenseMonitor.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

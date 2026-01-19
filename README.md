@@ -49,16 +49,18 @@ A Python application that displays monitoring information on the **SteelSeries A
 
 3. **Compile the application** using Nuitka:
 
-   Before using the installer, compile the Python application into a standalone executable with the following command:
+   Before using the installer, compile the Python application into a standalone folder with the following command:
 
    ```bash
-   py -m nuitka --onefile --standalone --windows-console-mode=disable \
-     --include-data-files=assets/lib/LibreHardwareMonitorLib.dll=lib/ \
-     --include-data-files=assets/icons/appIcon.ico=icons/ \
-     --include-data-files=assets/config/appConfig.json=config/ \
+   py -m nuitka --standalone --windows-console-mode=disable \
+     --include-data-files=assets/lib/LibreHardwareMonitorLib.dll=assets/lib/ \
+     --include-data-files=assets/icons/appIcon.ico=assets/icons/ \
+     --include-data-files=assets/config/appConfig.json=assets/config/ \
      --follow-imports --windows-icon-from-ico=assets/icons/appIcon.ico \
      --windows-uac-admin --output-filename=GameSenseMonitor.exe src/main.py
    ```
+
+   This produces `GameSenseMonitor.dist` containing `GameSenseMonitor.exe` and all dependencies.
 
 ## 🤝 Contributing
 
